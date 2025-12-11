@@ -1,6 +1,7 @@
 <script>
   // Import Supabase client for authentication
   import { supabase } from "$lib/supabaseClient.js";
+  import { goto } from '$app/navigation';
   import { onMount } from "svelte";
   import '$lib/styles/global.css';
 
@@ -22,21 +23,30 @@
   // Handle user logout
   async function logout() {
     await supabase.auth.signOut();
-    window.location.href = "/login";
+    goto('/login');
   }
 </script>
 
-<nav>
-  <div class="nav-links">
-    <a href="/tasks">📋 Tasks</a>
-    <a href="/summary">📊 Summary</a>
+<nav class="navbar">
+  <div class="nav-brand">
+    <button on:click={() => goto('/tasks')} class="brand-btn">
+      TimeTracker
+    </button>
   </div>
   
-  {#if user}
-    <button on:click={logout} class="logout-btn">
-      Logout
-    </button>
-  {/if}
+  <div class="nav-center">
+    <button on:click={() => goto('/tasks')} class="nav-btn">Tasks</button>
+    <button on:click={() => goto('/summary')} class="nav-btn">Summary</button>
+  </div>
+  
+  <div class="nav-right">
+    {#if user}
+      <span class="user-info">{user.email}</span>
+      <button on:click={logout} class="logout-btn">
+        Logout
+      </button>
+    {/if}
+  </div>
 </nav>
 
 <!-- Render child page content -->

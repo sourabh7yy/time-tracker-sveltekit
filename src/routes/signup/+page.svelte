@@ -1,5 +1,6 @@
 <script>
   import { supabase } from '$lib/supabaseClient.js';
+  import { goto } from '$app/navigation';
   import '$lib/styles/global.css';
 
   // Form state: user-entered email/password and feedback messages
@@ -28,39 +29,54 @@
   }
 </script>
 
-<div class="container">
-  <h1>Create Account</h1>
-  <p class="subtitle">Sign up for a new account</p>
-  
-  <form on:submit={signup}>
-    <input 
-      bind:value={email} 
-      type="email" 
-      placeholder="Email" 
-      required 
-      disabled={loading}
-    />
-    <input 
-      bind:value={password} 
-      type="password" 
-      placeholder="Password" 
-      required 
-      disabled={loading}
-    />
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1>Create Account</h1>
+    </div>
     
-    <button type="submit" disabled={loading} class="btn-full">
-      {loading ? 'Creating Account...' : 'Create Account'}
-    </button>
-  </form>
-  
-  {#if error}
-    <p style="color:red">{error}</p>
-  {/if}
-  {#if message}
-    <p style="color:green; margin-top: 15px; padding: 10px; background: #d4edda; border-radius: 4px;">{message}</p>
-  {/if}
-  
-  <p style="text-align: center; margin-top: 20px; color: #666;">
-    Already have an account? <a href="/login" style="color: #007cba;">Sign in</a>
-  </p>
+    <form class="auth-form" on:submit={signup}>
+      <div class="form-group">
+        <input 
+          bind:value={email} 
+          type="email" 
+          placeholder="Email" 
+          class="auth-input"
+          required 
+          disabled={loading}
+        />
+      </div>
+      
+      <div class="form-group">
+        <input 
+          bind:value={password} 
+          type="password" 
+          placeholder="Password" 
+          class="auth-input"
+          required 
+          disabled={loading}
+        />
+      </div>
+      
+      <button type="submit" disabled={loading} class="auth-btn primary">
+        {loading ? 'Creating Account...' : 'Create Account'}
+      </button>
+      
+      {#if error}
+        <div class="auth-error">
+          {error}
+        </div>
+      {/if}
+      
+      {#if message}
+        <div class="auth-success">
+          {message}
+        </div>
+      {/if}
+    </form>
+    
+    <div class="auth-footer">
+      <p>Already have an account? <button on:click={() => goto('/login')} class="link-btn">Sign In</button></p>
+    </div>
+  </div>
 </div>

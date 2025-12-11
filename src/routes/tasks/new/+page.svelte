@@ -1,5 +1,6 @@
 <script>
   import { supabase } from '$lib/supabaseClient.js';
+  import { goto } from '$app/navigation';
   import '$lib/styles/global.css';
 
   let userInput = "";
@@ -74,33 +75,70 @@
       return;
     }
 
-    window.location.href = "/tasks";
+    goto('/tasks');
   }
 </script>
 
 <div class="container">
-  <h1>Create Task</h1>
+  <button on:click={() => goto('/tasks')} class="back-link">Back to Tasks</button>
   
-  <label>Describe your task:</label>
-  <textarea bind:value={userInput} placeholder="e.g., follow up with designer"></textarea>
+  <div class="create-task-header">
+    <h1>Create New Task</h1>
+  </div>
   
-  <button on:click={generateAI} class="ai-btn" disabled={loading}>
-    {loading ? 'Generating...' : '🤖 Generate with AI'}
-  </button>
+  <div class="form-section">
+    <div class="ai-section">
+      <h3>AI Assistant</h3>
+      <label>Describe what you need to do:</label>
+      <textarea 
+        bind:value={userInput} 
+        placeholder="e.g., follow up with designer about the new logo"
+        class="ai-input"
+      ></textarea>
+      
+      <button on:click={generateAI} class="ai-btn" disabled={loading}>
+        {loading ? 'Generating...' : 'Generate with AI'}
+      </button>
+    </div>
+    
+    <div class="divider">
+      <span>OR</span>
+    </div>
+    
+    <div class="manual-section">
+      <h3>Manual Entry</h3>
+      
+      <div class="form-group">
+        <label>Task Title *</label>
+        <input 
+          bind:value={title} 
+          placeholder="Enter task title" 
+          disabled={loading}
+          class="title-input"
+        />
+      </div>
+      
+      <div class="form-group">
+        <label>Description</label>
+        <textarea 
+          bind:value={description} 
+          placeholder="Add task details (optional)"
+          disabled={loading}
+          class="description-input"
+        ></textarea>
+      </div>
+    </div>
+  </div>
   
-  <hr />
-  
-  <label>Task Title</label>
-  <input bind:value={title} placeholder="Generated or manual title" disabled={loading} />
-  
-  <label>Description</label>
-  <textarea bind:value={description} placeholder="Generated or manual description" disabled={loading}></textarea>
-  
-  <button on:click={createTask} disabled={loading} class="btn-full">
-    {loading ? 'Saving...' : 'Save Task'}
-  </button>
+  <div class="form-actions">
+    <button on:click={createTask} disabled={loading || !title.trim()} class="create-btn-primary">
+      {loading ? 'Creating Task...' : 'Create Task'}
+    </button>
+  </div>
   
   {#if error}
-    <p style="color:red">{error}</p>
+    <div class="error-message">
+      {error}
+    </div>
   {/if}
 </div>

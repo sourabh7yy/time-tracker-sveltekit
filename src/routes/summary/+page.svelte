@@ -17,6 +17,16 @@
   let loading = true;     // Loading state
   let error = "";         // Error message
 
+  // Format status for display
+  function formatStatus(status) {
+    switch(status) {
+      case 'in_progress': return 'In Progress';
+      case 'pending': return 'Pending';
+      case 'completed': return 'Completed';
+      default: return status;
+    }
+  }
+
   // Format seconds into HH:MM:SS display
   function formatTime(sec) {
     const h = Math.floor(sec / 3600);
@@ -97,7 +107,7 @@
 </script>
 
 <div class="container-wide">
-  <h1>📊 Daily Summary</h1>
+  <h1>Daily Summary</h1>
   
   {#if loading}
     <p>Loading summary...</p>
@@ -106,26 +116,27 @@
   {:else}
     <h2>Today's Stats</h2>
     
-    <table class="stats-table">
-      <tbody>
-        <tr>
-          <th>Total Time Tracked</th>
-          <td>{formatTime(summary.totalTime)}</td>
-        </tr>
-        <tr>
-          <th>Completed Tasks</th>
-          <td>{summary.completed}</td>
-        </tr>
-        <tr>
-          <th>Tasks In Progress</th>
-          <td>{summary.inProgress}</td>
-        </tr>
-        <tr>
-          <th>Pending Tasks</th>
-          <td>{summary.pending}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="summary-stats">
+      <div class="summary-card">
+        <h3>Total Time</h3>
+        <p class="big-number">{formatTime(summary.totalTime)}</p>
+      </div>
+      
+      <div class="summary-card">
+        <h3>Completed</h3>
+        <p class="big-number">{summary.completed}</p>
+      </div>
+      
+      <div class="summary-card">
+        <h3>In Progress</h3>
+        <p class="big-number">{summary.inProgress}</p>
+      </div>
+      
+      <div class="summary-card">
+        <h3>Pending</h3>
+        <p class="big-number">{summary.pending}</p>
+      </div>
+    </div>
     
     <hr />
     
@@ -146,7 +157,7 @@
           {#each tasks as task}
             <tr>
               <td>{task.title}</td>
-              <td>{task.status}</td>
+              <td>{formatStatus(task.status)}</td>
               <td>
                 {formatTime(
                   logs

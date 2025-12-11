@@ -2,6 +2,7 @@
   // Import Supabase client and SvelteKit utilities
   import { supabase } from "$lib/supabaseClient.js";
   import { page } from "$app/stores";
+  import { goto } from '$app/navigation';
   import { onMount, onDestroy } from "svelte";
   import '$lib/styles/global.css';
 
@@ -18,6 +19,16 @@
 
   // Extract task ID from URL parameters
   $: id = $page.params.id;
+
+  // Format status for display
+  function formatStatus(status) {
+    switch(status) {
+      case 'in_progress': return 'In Progress';
+      case 'pending': return 'Pending';
+      case 'completed': return 'Completed';
+      default: return status;
+    }
+  }
 
   // Format seconds into HH:MM:SS display
   function formatTime(sec) {
@@ -81,11 +92,14 @@
     loading = false;
   }
 
-  // Start timer UI updates (increment elapsed time every second)
+  // Start timer UI updates (calculate elapsed time from database)
   function startTimerLoop() {
     stopTimerLoop();
     timerInterval = setInterval(() => {
-      elapsed += 1;
+      if (activeLog) {
+        const start = new Date(activeLog.started_at);
+        elapsed = Math.floor((Date.now() - start.getTime()) / 1000);
+      }
     }, 1000);
   }
 
@@ -96,6 +110,12 @@
 
   // Start time tracking for this task
   async function startTimer() {
+    // Check if timer already running for this task
+    if (activeLog) {
+      alert("Timer already running for this task");
+      return;
+    }
+
     stopTimerLoop();
 
     const { data: sessionData } = await supabase.auth.getSession();
@@ -124,6 +144,13 @@
       alert(error.message);
       return;
     }
+
+    // Save timer state to localStorage for persistence
+    localStorage.setItem('activeTimer', JSON.stringify({
+      taskId: id,
+      logId: data.id,
+      startTime: data.started_at
+    }));
 
     // Initialize timer state and start UI updates
     activeLog = data;
@@ -154,6 +181,9 @@
       return;
     }
 
+    // Clear saved timer state
+    localStorage.removeItem('activeTimer');
+
     // Reset timer state and refresh data
     activeLog = null;
     elapsed = 0;
@@ -161,7 +191,24 @@
   }
 
   // Load data when component mounts
-  onMount(loadData);
+  onMount(() => {
+    // Check for saved timer state on page refresh
+    const savedTimer = localStorage.getItem('activeTimer');
+    if (savedTimer) {
+      try {
+        const { taskId, startTime } = JSON.parse(savedTimer);
+        if (taskId === id) {
+          // Restore timer state
+          const start = new Date(startTime);
+          elapsed = Math.floor((Date.now() - start.getTime()) / 1000);
+        }
+      } catch (e) {
+        // Clear invalid saved data
+        localStorage.removeItem('activeTimer');
+      }
+    }
+    loadData();
+  });
   // Clean up timer when component is destroyed
   onDestroy(() => stopTimerLoop());
 </script>
@@ -172,11 +219,11 @@
   {:else if error}
     <p style="color:red">{error}</p>
   {:else}
-    <a href="/tasks" class="back-link">⬅ Back to Tasks</a>
+    <button on:click={() => goto('/tasks')} class="back-link">Back to Tasks</button>
     
     <h1>{task.title}</h1>
     <p>{task.description}</p>
-    <p>Status: <strong>{task.status}</strong></p>
+    <p>Status: <strong>{formatStatus(task.status)}</strong></p>
     
     <hr />
     
