@@ -27,20 +27,25 @@
   }
 </script>
 
+<!-- Navigation bar displayed on all pages -->
 <nav class="navbar">
+  <!-- Brand/logo section -->
   <div class="nav-brand">
     <button on:click={() => goto('/tasks')} class="brand-btn">
       TimeTracker
     </button>
   </div>
   
+  <!-- Main navigation links -->
   <div class="nav-center">
     <button on:click={() => goto('/tasks')} class="nav-btn">Tasks</button>
     <button on:click={() => goto('/summary')} class="nav-btn">Summary</button>
   </div>
   
+  <!-- User authentication section -->
   <div class="nav-right">
     {#if user}
+      <!-- Show user email and logout button when authenticated -->
       <span class="user-info">{user.email}</span>
       <button on:click={logout} class="logout-btn">
         Logout
