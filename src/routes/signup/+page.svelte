@@ -17,14 +17,26 @@
     message = '';
     error = '';
 
-    const { error: err } = await supabase.auth.signUp({ email, password });
+    // Create account AND auto-login
+    const { data, error: err } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: null,
+        createSession: true    
+      }
+    });
 
     loading = false;
 
     if (err) {
       error = err.message;
-    } else {
-      message = 'Account created! Now you can login.';
+      return;
+    }
+
+    // Redirect after auto-login
+    if (data.session) {
+      goto('/tasks');
     }
   }
 </script>
@@ -59,24 +71,25 @@
       </div>
       
       <button type="submit" disabled={loading} class="auth-btn primary">
-        {loading ? 'Creating Account...' : 'Create Account'}
+        {loading ? 'Creating Account...' : 'Create Account & Login'}
       </button>
-      
+
       {#if error}
-        <div class="auth-error">
-          {error}
-        </div>
+        <div class="auth-error">{error}</div>
       {/if}
-      
+
       {#if message}
-        <div class="auth-success">
-          {message}
-        </div>
+        <div class="auth-success">{message}</div>
       {/if}
     </form>
     
     <div class="auth-footer">
-      <p>Already have an account? <button on:click={() => goto('/login')} class="link-btn">Sign In</button></p>
+      <p>
+        Already have an account?
+        <button on:click={() => goto('/login')} class="link-btn">
+          Sign In
+        </button>
+      </p>
     </div>
   </div>
 </div>

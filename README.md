@@ -5,10 +5,24 @@ A modern time tracking application built with SvelteKit and Supabase for managin
 ## Tech Stack
 
 - **Frontend**: SvelteKit v2.48.5, Svelte v5.43.8, JavaScript
+  - SvelteKit provides full-stack web framework with file-based routing
+  - Svelte compiles components to vanilla JavaScript for optimal performance
+  - Handles user interface, form validation, and client-side navigation
+
 - **Backend**: Supabase v2.87.1 (Authentication, Database)
-- **Build Tool**: Vite v7.2.2
+  - PostgreSQL database with tables: `users`, `tasks`, `time_logs`
+  - Built-in authentication system for user signup/login
+  - Real-time subscriptions and row-level security
+  - RESTful API auto-generated from database schema
+
+
 - **Styling**: CSS
+  - Custom CSS with responsive design
+  - Component-scoped and global styles
+
 - **Deployment**: Vercel
+  - Serverless deployment platform
+  - Automatic deployments from Git
 
 ## Setup Instructions
 
@@ -59,7 +73,11 @@ npm run preview
 
 ## Live Demo
 
-🚀 **Live Application**: 
+ **Live Application**: https://time-tracker-sveltekit.vercel.app/
+
+## Screenshots & Demo
+
+📸 **Screenshots/Demo Video**: https://drive.google.com/drive/folders/1Q4LgYAuHWuVuNGZ21RHsKEuv0nyeFsnR?usp=sharing
 
 ## Features
 
