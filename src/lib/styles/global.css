@@ -1,0 +1,300 @@
+/* Global Styles */
+.container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.container-wide {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin: 25px 0 15px 0;
+  color: #333;
+}
+
+.subtitle {
+  color: #666;
+  text-align: center;
+  margin: 0 0 2rem 0;
+  font-size: 0.9rem;
+}
+
+/* Form Elements */
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+button {
+  padding: 8px 16px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #007cba;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  width: auto;
+  display: inline-block;
+}
+
+button:hover {
+  background: #005a87;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Links and Action Buttons */
+.create-btn, .action-btn {
+  display: inline-block;
+  padding: 10px 15px;
+  background: #007cba;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.create-btn:hover, .action-btn:hover {
+  background: #005a87;
+}
+
+.action-btn {
+  margin-left: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+/* Task Items */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f9f9f9;
+}
+
+/* Delete Actions */
+.delete-btn {
+  margin-left: 10px;
+  padding: 6px 12px;
+  background: none;
+  color: red;
+  border: 1px solid red;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  width: auto;
+}
+
+.delete-btn:hover {
+  background: red;
+  color: white;
+}
+
+.confirm-dialog {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid red;
+  background: #ffe6e6;
+  border-radius: 4px;
+}
+
+.delete-confirm {
+  background: red;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: auto;
+  font-size: 14px;
+}
+
+/* Task Detail Page */
+.back-link {
+  display: inline-block;
+  margin-bottom: 15px;
+  color: #007cba;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.timer-display {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.timer-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  width: auto;
+  font-size: 14px;
+}
+
+.start-timer {
+  background: green;
+  color: white;
+}
+
+.stop-timer {
+  background: red;
+  color: white;
+}
+
+.log-item {
+  margin-bottom: 8px;
+  padding: 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 15px 0;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background: #f5f5f5;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.stats-table {
+  width: auto;
+  max-width: 400px;
+}
+
+.stats-table th {
+  background: #007cba;
+  color: white;
+}
+
+/* Navigation */
+nav {
+  padding: 15px 20px;
+  border-bottom: 2px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  margin-bottom: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #007cba;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.nav-links a:hover {
+  background: #e9ecef;
+  text-decoration: none;
+}
+
+.logout-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  width: auto;
+}
+
+.logout-btn:hover {
+  background: #c82333;
+}
+
+/* Forms */
+label {
+  display: block;
+  margin: 15px 0 5px 0;
+  font-weight: 500;
+  color: #333;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+}
+
+textarea:focus, input:focus {
+  outline: none;
+  border-color: #007cba;
+}
+
+.ai-btn {
+  background: #28a745;
+  margin-top: 10px;
+}
+
+.ai-btn:hover {
+  background: #218838;
+}

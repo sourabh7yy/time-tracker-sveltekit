@@ -2,6 +2,7 @@
   // Import Supabase client and Svelte utilities
   import { supabase } from "$lib/supabaseClient.js";
   import { onMount } from "svelte";
+  import '$lib/styles/global.css';
 
   // Component state variables
   let logs = [];          // Today's time logs
@@ -95,71 +96,68 @@
   onMount(loadSummary);
 </script>
 
-<h1>📊 Daily Summary</h1>
-
-<!-- Conditional rendering based on loading/error states -->
-{#if loading}
-  <p>Loading summary...</p>
-{:else if error}
-  <p style="color:red">{error}</p>
-{:else}
-  <!-- Summary statistics table -->
-  <h2>Today's Stats</h2>
-
-  <table border="1" cellpadding="8" style="border-collapse: collapse;">
-    <tbody>
-      <tr>
-        <th>Total Time Tracked</th>
-        <td>{formatTime(summary.totalTime)}</td>
-      </tr>
-      <tr>
-        <th>Completed Tasks</th>
-        <td>{summary.completed}</td>
-      </tr>
-      <tr>
-        <th>Tasks In Progress</th>
-        <td>{summary.inProgress}</td>
-      </tr>
-      <tr>
-        <th>Pending Tasks</th>
-        <td>{summary.pending}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <hr />
-
-  <!-- Detailed task breakdown -->
-  <h2>Tasks Worked on Today</h2>
-
-  {#if tasks.length === 0}
-    <p>No tasks worked on today.</p>
+<div class="container-wide">
+  <h1>📊 Daily Summary</h1>
+  
+  {#if loading}
+    <p>Loading summary...</p>
+  {:else if error}
+    <p style="color:red">{error}</p>
   {:else}
-    <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">
-      <thead>
-        <tr>
-          <th>Task</th>
-          <th>Status</th>
-          <th>Total Time</th>
-        </tr>
-      </thead>
-
+    <h2>Today's Stats</h2>
+    
+    <table class="stats-table">
       <tbody>
-        {#each tasks as task}
-          <tr>
-            <td>{task.title}</td>
-            <td>{task.status}</td>
-            <td>
-              <!-- Calculate total time spent on this specific task -->
-              {formatTime(
-                logs
-                  .filter((l) => l.task_id === task.id)
-                  .reduce((sum, l) => sum + (l.duration_sec || 0), 0)
-              )}
-            </td>
-          </tr>
-        {/each}
+        <tr>
+          <th>Total Time Tracked</th>
+          <td>{formatTime(summary.totalTime)}</td>
+        </tr>
+        <tr>
+          <th>Completed Tasks</th>
+          <td>{summary.completed}</td>
+        </tr>
+        <tr>
+          <th>Tasks In Progress</th>
+          <td>{summary.inProgress}</td>
+        </tr>
+        <tr>
+          <th>Pending Tasks</th>
+          <td>{summary.pending}</td>
+        </tr>
       </tbody>
     </table>
+    
+    <hr />
+    
+    <h2>Tasks Worked on Today</h2>
+    
+    {#if tasks.length === 0}
+      <p>No tasks worked on today.</p>
+    {:else}
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Status</th>
+            <th>Total Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each tasks as task}
+            <tr>
+              <td>{task.title}</td>
+              <td>{task.status}</td>
+              <td>
+                {formatTime(
+                  logs
+                    .filter((l) => l.task_id === task.id)
+                    .reduce((sum, l) => sum + (l.duration_sec || 0), 0)
+                )}
+              </td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    {/if}
   {/if}
-{/if}
+</div>

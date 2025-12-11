@@ -1,5 +1,6 @@
 <script>
   import { supabase } from '$lib/supabaseClient.js';
+  import '$lib/styles/global.css';
 
   let userInput = "";
   let title = "";
@@ -77,30 +78,29 @@
   }
 </script>
 
-<h1>Create Task</h1>
-
-<!-- User natural language input -->
-<label>Describe your task:</label>
-<textarea bind:value={userInput} placeholder="e.g., follow up with designer"></textarea>
-
-<button on:click={generateAI} style="margin-top: 6px;">
-  Generate with AI
-</button>
-
-<hr />
-
-<!-- Generated fields -->
-<label>Task Title</label>
-<input bind:value={title} placeholder="Generated or manual title" />
-
-<label>Description</label>
-<textarea bind:value={description} placeholder="Generated or manual description"></textarea>
-
-<button on:click={createTask} disabled={loading} style="margin-top: 10px;">
-  {#if loading}Saving...{/if}
-  {#if !loading}Save Task{/if}
-</button>
-
-{#if error}
-  <p style="color:red">{error}</p>
-{/if}
+<div class="container">
+  <h1>Create Task</h1>
+  
+  <label>Describe your task:</label>
+  <textarea bind:value={userInput} placeholder="e.g., follow up with designer"></textarea>
+  
+  <button on:click={generateAI} class="ai-btn" disabled={loading}>
+    {loading ? 'Generating...' : '🤖 Generate with AI'}
+  </button>
+  
+  <hr />
+  
+  <label>Task Title</label>
+  <input bind:value={title} placeholder="Generated or manual title" disabled={loading} />
+  
+  <label>Description</label>
+  <textarea bind:value={description} placeholder="Generated or manual description" disabled={loading}></textarea>
+  
+  <button on:click={createTask} disabled={loading} class="btn-full">
+    {loading ? 'Saving...' : 'Save Task'}
+  </button>
+  
+  {#if error}
+    <p style="color:red">{error}</p>
+  {/if}
+</div>

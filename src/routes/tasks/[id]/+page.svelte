@@ -3,6 +3,7 @@
   import { supabase } from "$lib/supabaseClient.js";
   import { page } from "$app/stores";
   import { onMount, onDestroy } from "svelte";
+  import '$lib/styles/global.css';
 
   // Component state variables
   let task = null;        // Current task data
@@ -165,57 +166,49 @@
   onDestroy(() => stopTimerLoop());
 </script>
 
-<!-- Conditional rendering based on loading/error states -->
-{#if loading}
-  <p>Loading...</p>
-{:else if error}
-  <p style="color:red">{error}</p>
-{:else}
-
-  <!-- Navigation back to tasks list -->
-  <a href="/tasks" style="display:inline-block; margin-bottom:15px;">
-    ⬅ Back to Tasks
-  </a>
-
-  <!-- Task details -->
-  <h1>{task.title}</h1>
-
-  <p>{task.description}</p>
-  <p>Status: <strong>{task.status}</strong></p>
-
-  <hr />
-
-  <!-- Time tracking controls -->
-  <h2>⏱ Time Tracker</h2>
-
-  {#if activeLog}
-    <p>Tracking: <strong>{formatTime(elapsed)}</strong></p>
-    <button on:click={stopTimer} style="background:red; color:white;">Stop Timer</button>
+<div class="container-wide">
+  {#if loading}
+    <p>Loading...</p>
+  {:else if error}
+    <p style="color:red">{error}</p>
   {:else}
-    <button on:click={startTimer} style="background:green; color:white;">Start Timer</button>
+    <a href="/tasks" class="back-link">⬅ Back to Tasks</a>
+    
+    <h1>{task.title}</h1>
+    <p>{task.description}</p>
+    <p>Status: <strong>{task.status}</strong></p>
+    
+    <hr />
+    
+    <h2>⏱ Time Tracker</h2>
+    
+    {#if activeLog}
+      <p class="timer-display">Tracking: <strong>{formatTime(elapsed)}</strong></p>
+      <button on:click={stopTimer} class="timer-btn stop-timer">Stop Timer</button>
+    {:else}
+      <button on:click={startTimer} class="timer-btn start-timer">Start Timer</button>
+    {/if}
+    
+    <hr />
+    
+    <h2>Time Logs</h2>
+    
+    {#if logs.length === 0}
+      <p>No time logs yet.</p>
+    {:else}
+      <ul>
+        {#each logs as log}
+          <li class="log-item">
+            <strong>{new Date(log.started_at).toLocaleString()}</strong>
+            {#if log.ended_at}
+              — Ended: {new Date(log.ended_at).toLocaleString()}
+              — Duration: {formatTime(log.duration_sec)}
+            {:else}
+              — (active)
+            {/if}
+          </li>
+        {/each}
+      </ul>
+    {/if}
   {/if}
-
-  <hr />
-
-  <!-- Time logs history -->
-  <h2>Time Logs</h2>
-
-  {#if logs.length === 0}
-    <p>No time logs yet.</p>
-  {:else}
-    <ul>
-      {#each logs as log}
-        <li>
-          <strong>{new Date(log.started_at).toLocaleString()}</strong>
-
-          {#if log.ended_at}
-            — Ended: {new Date(log.ended_at).toLocaleString()}
-            — Duration: {formatTime(log.duration_sec)}
-          {:else}
-            — (active)
-          {/if}
-        </li>
-      {/each}
-    </ul>
-  {/if}
-{/if}
+</div>

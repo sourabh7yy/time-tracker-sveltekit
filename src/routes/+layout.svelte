@@ -2,6 +2,7 @@
   // Import Supabase client for authentication
   import { supabase } from "$lib/supabaseClient.js";
   import { onMount } from "svelte";
+  import '$lib/styles/global.css';
 
   // Store current authenticated user
   let user = null;
@@ -25,17 +26,14 @@
   }
 </script>
 
-<!-- Main navigation bar -->
-<nav style="padding:12px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between;">
-  <!-- Navigation links -->
-  <div>
-    <a href="/tasks" style="margin-right:12px;">Tasks</a>
-    <a href="/summary" style="margin-right:12px;">Summary</a>
+<nav>
+  <div class="nav-links">
+    <a href="/tasks">📋 Tasks</a>
+    <a href="/summary">📊 Summary</a>
   </div>
-
-  <!-- Show logout button only when user is authenticated -->
+  
   {#if user}
-    <button on:click={logout} style="background:red; color:white; padding:5px 10px;">
+    <button on:click={logout} class="logout-btn">
       Logout
     </button>
   {/if}

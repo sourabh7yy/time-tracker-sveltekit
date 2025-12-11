@@ -1,6 +1,6 @@
 <script>
-
   import { supabase } from '$lib/supabaseClient.js';
+  import '$lib/styles/global.css';
 
   // Local state for the form fields and user-facing error copy
   let email = "";
@@ -28,13 +28,17 @@
   }
 </script>
 
-<h1>Login</h1>
+<div class="container">
+  <h1>Login</h1>
+  
+  <input bind:value={email} placeholder="Email" />
+  <input bind:value={password} type="password" placeholder="Password" />
+  
+  <button on:click|preventDefault={login} class="btn-full">Login</button>
+  
+  {#if error}
+    <p style="color:red">{error}</p>
+  {/if}
+</div>
 
-<input bind:value={email} placeholder="Email" />
-<input bind:value={password} type="password" />
 
-<button on:click|preventDefault={login}>Login</button>
-
-{#if error}
-  <p style="color:red">{error}</p>
-{/if}
